@@ -1,7 +1,8 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+import config from "./config";
 import app from "./server";
 
-app.listen(3001, () => {
-    console.log(`SERVER IS ON, PORT: 3001`);
+app.listen(config.port, () => {
+    console.log(`SERVER IS ON, PORT: ${config.port}`);
 });
