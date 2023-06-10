@@ -1,4 +1,4 @@
-import express, { Errback, NextFunction, Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { protect } from "./modules/auth";

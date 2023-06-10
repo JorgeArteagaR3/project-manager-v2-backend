@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../db";
 import { comparePasswords, createJWT, hashPassword } from "../modules/auth";
+import { AuthRequest } from "../types/types";
 
 export const creatNewUser = async (
     req: Request,
@@ -18,13 +19,12 @@ export const creatNewUser = async (
         const token = createJWT(user);
         res.json({ message: "User Created Succesfully", token });
     } catch (e) {
-        e.type = "input";
         next(e);
     }
 };
 
 export const signIn = async (
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction
 ) => {
@@ -34,7 +34,7 @@ export const signIn = async (
         });
         const isValid = await comparePasswords(
             req.body.password,
-            user.password
+            user!.password
         );
 
         if (!isValid) {
@@ -42,7 +42,7 @@ export const signIn = async (
             res.json({ message: "NOPE" });
         }
 
-        const token = createJWT(user);
+        const token = createJWT(user!);
         res.json({ message: "Succesfully signed in", token });
     } catch (e) {
         console.log(e);

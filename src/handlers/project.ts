@@ -5,7 +5,7 @@ import { AuthRequest } from "../types/types";
 export const getallProjects = async (req: AuthRequest, res: Response) => {
     try {
         const projects = await prisma.project.findMany({
-            where: { belongsToId: req.user.id },
+            where: { belongsToId: req.user!.id },
         });
         res.json({ data: projects });
     } catch (e) {
@@ -23,7 +23,7 @@ export const createProject = async (
             data: {
                 name: req.body.name,
                 description: req.body.description,
-                belongsToId: req.user.id,
+                belongsToId: req.user!.id,
             },
         });
 
@@ -42,7 +42,7 @@ export const updateProject = async (
         const project = await prisma.project.update({
             where: {
                 id_belongsToId: {
-                    belongsToId: req.user.id,
+                    belongsToId: req.user!.id,
                     id: req.params.id,
                 },
             },
@@ -65,7 +65,7 @@ export const getOneProject = async (
 ) => {
     try {
         const project = await prisma.project.findFirst({
-            where: { belongsToId: req.user.id, id: req.params.id },
+            where: { belongsToId: req.user!.id, id: req.params.id },
             include: { tasks: true },
         });
 
@@ -84,7 +84,7 @@ export const deleteProject = async (
         const project = await prisma.project.delete({
             where: {
                 id_belongsToId: {
-                    belongsToId: req.user.id,
+                    belongsToId: req.user!.id,
                     id: req.params.id,
                 },
             },

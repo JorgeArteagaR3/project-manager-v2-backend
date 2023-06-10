@@ -26,7 +26,7 @@ export const createTask = async (req: AuthRequest, res: Response) => {
 
 export const updateTask = async (req: AuthRequest, res: Response) => {
     const projects = await prisma.project.findMany({
-        where: { belongsToId: req.user.id },
+        where: { belongsToId: req.user!.id },
         include: { tasks: true },
     });
 
@@ -48,7 +48,7 @@ export const updateTask = async (req: AuthRequest, res: Response) => {
 
 export const deleteTask = async (req: AuthRequest, res: Response) => {
     const projects = await prisma.project.findMany({
-        where: { belongsToId: req.user.id },
+        where: { belongsToId: req.user!.id },
         include: { tasks: true },
     });
 
