@@ -34,7 +34,12 @@ router.delete("/project/:id", deleteProject);
 
 //TASKS
 
-router.post("/task", createTask);
+router.post(
+    "/task",
+    body("title").exists().isString(),
+    body("description").optional(),
+    createTask
+);
 router.put(
     "/task/:id",
     body("title").optional(),
