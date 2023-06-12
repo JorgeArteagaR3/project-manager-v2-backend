@@ -45,6 +45,6 @@ export const signIn = async (
         const token = createJWT(user!);
         res.json({ message: "Succesfully signed in", token });
     } catch (e) {
-        console.log(e);
+        next(e);
     }
 };
