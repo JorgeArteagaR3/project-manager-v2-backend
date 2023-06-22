@@ -14,11 +14,6 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//added to fix the route refreshing error
-app.use(express.static(path.join(__dirname, "build")));
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
-});
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.json({ message: "Hello, welcome to my API" });
