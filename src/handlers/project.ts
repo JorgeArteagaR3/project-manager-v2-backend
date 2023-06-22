@@ -6,6 +6,7 @@ export const getallProjects = async (req: AuthRequest, res: Response) => {
     try {
         const projects = await prisma.project.findMany({
             where: { belongsToId: req.user!.id },
+            include: { tasks: true },
         });
         res.json({ data: projects });
     } catch (e) {
