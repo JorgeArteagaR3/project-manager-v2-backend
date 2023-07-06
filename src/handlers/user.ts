@@ -73,11 +73,29 @@ export const updateUser = async (
     next: NextFunction
 ) => {
     try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.params.id },
+        });
+
+        const isValid = await comparePasswords(
+            req.body.password,
+            user!.password
+        );
+
+        if (!isValid) {
+            res.status(401);
+            return res.json({ message: "Invalid Password" });
+        }
+
         const updatedUser = await prisma.user.update({
             where: { id: req.params.id },
-            data: req.body,
+            data: {
+                password: await hashPassword(req.body.newpassword),
+                email: req.body.email,
+            },
         });
-        res.json({ data: { updatedUser } });
+
+        res.json({ data: updatedUser });
     } catch (e) {
         next(e);
     }

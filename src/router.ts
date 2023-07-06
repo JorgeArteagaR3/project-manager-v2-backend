@@ -16,8 +16,9 @@ router.get("/user", getUser);
 
 router.put(
     "/user/:id",
+    body("password").exists(),
     body("email").isEmail().optional(),
-    body("password").optional(),
+    body("newpassword").optional(),
     updateUser
 );
 
