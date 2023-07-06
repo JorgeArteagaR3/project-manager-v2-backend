@@ -48,3 +48,37 @@ export const signIn = async (
         next(e);
     }
 };
+
+export const getUser = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.user?.id },
+        });
+        if (!user) {
+            return res.json({ message: "No user found" });
+        }
+        res.json({ data: user });
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const updateUser = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: req.params.id },
+            data: req.body,
+        });
+        res.json({ data: { updatedUser } });
+    } catch (e) {
+        next(e);
+    }
+};

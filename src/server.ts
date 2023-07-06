@@ -6,7 +6,6 @@ import router from "./router";
 import { creatNewUser, signIn } from "./handlers/user";
 import { body } from "express-validator";
 import { handleInputErrors } from "./modules/error";
-import path from "path";
 
 const app = express();
 
@@ -29,6 +28,7 @@ app.post(
     handleInputErrors,
     creatNewUser
 );
+app.get("/user");
 app.post("/signin", handleInputErrors, signIn);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

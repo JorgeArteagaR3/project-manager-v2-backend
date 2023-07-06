@@ -8,7 +8,18 @@ import {
 } from "./handlers/project";
 import { body } from "express-validator";
 import { createTask, deleteTask, updateTask } from "./handlers/task";
+import { getUser, updateUser } from "./handlers/user";
+
 const router = Router();
+//USER
+router.get("/user", getUser);
+
+router.put(
+    "/user/:id",
+    body("email").isEmail().optional(),
+    body("password").optional(),
+    updateUser
+);
 
 //PROJECTS
 
