@@ -24,7 +24,7 @@ model Project {
   name        String @db.VarChar(255)
   description String?
   belongsToId String
-  belongsTo   User   @relation(fields: [belongsToId], references: [id])
+  belongsTo   User   @relation(fields: [belongsToId], references: [id], onDelete: Cascade)
   tasks       Task[]
 
   @@unique([id, belongsToId])
