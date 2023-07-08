@@ -87,15 +87,33 @@ export const updateUser = async (
             return res.json({ message: "Invalid Password" });
         }
 
-        const updatedUser = await prisma.user.update({
-            where: { id: req.params.id },
-            data: {
-                password: await hashPassword(req.body.newpassword),
-                email: req.body.email,
-            },
-        });
+        if (req.body.email) {
+            const updatedUser = await prisma.user.update({
+                where: { username: user?.username },
+                data: {
+                    email: req.body.email,
+                },
+            });
+            res.json({ data: updatedUser });
+        } else {
+            const isSamePassword = await comparePasswords(
+                req.body.newpassword,
+                user?.password!
+            );
 
-        res.json({ data: updatedUser });
+            if (isSamePassword) {
+                res.status(400);
+                return res.json({ message: "Cannot put same password" });
+            }
+
+            const updatedUser = await prisma.user.update({
+                where: { username: user?.username },
+                data: {
+                    password: await hashPassword(req.body.newpassword),
+                },
+            });
+            res.json({ data: updatedUser });
+        }
     } catch (e) {
         next(e);
     }
