@@ -32,6 +32,10 @@ export const signIn = async (
         const user = await prisma.user.findUnique({
             where: { username: req.body.username },
         });
+        if (!user) {
+            res.status(401);
+            return res.json({ message: "This user doesn't exist" });
+        }
         const isValid = await comparePasswords(
             req.body.password,
             user!.password
@@ -39,7 +43,7 @@ export const signIn = async (
 
         if (!isValid) {
             res.status(401);
-            res.json({ message: "NOPE" });
+            return res.json({ message: "Invalid Password" });
         }
 
         const token = createJWT(user!);
